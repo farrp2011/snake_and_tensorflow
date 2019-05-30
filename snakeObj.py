@@ -274,7 +274,7 @@ class GameObj():
             self.body[0]["x"] = self.body[0]["x"] - 1
         elif(self.direction == ARROW_RIGHT()):
             self.body[0]["x"] = self.body[0]["x"] + 1
-        
+
 
         #did the player find food?
         if(self.body[0]["x"] == self.food["x"] and self.body[0]["y"] == self.food["y"]):
@@ -290,7 +290,7 @@ class GameObj():
             self.updateDisplay()
             return(False)
 
-        os.system("cls")
+        os.system("clear")
         print("Head Location X:"+str(self.body[0]["x"])+" Y:"+str(self.body[0]["y"]))
         print("2nd part Location X:"+str(self.body[1]["x"])+" Y:"+str(self.body[1]["y"]))
         print("Food Location X:"+str(self.food["x"])+" Y:"+str(self.food["y"]))
@@ -298,14 +298,13 @@ class GameObj():
 
         num = len(self.body)
         for i in range(1,num):
-            
+
             if(self.body[0]["x"] == self.body[i]["x"] and self.body[0]["y"] == self.body[i]["y"] and self.direction !=  None):
                 #here the player ran into themslef
                 self.gameOver = True
                 self.updateDisplay()
                 return(False)
 
-        
 
         self.updateDisplay()
         return(True)
@@ -323,7 +322,7 @@ class GameObj():
 
         #Here we are making the player.
         #it is kinda annoying because I have to make every
-        
+
         for i in range(len(self.body)):
             self.bodyPart[i].move(self.getNewX(self.bodyPart[i].getP1(),self.body[i]["x"]* BOX_SIZE()),self.getNewY(self.bodyPart[i].getP1(),self.body[i]["y"]* BOX_SIZE()))
 
@@ -336,7 +335,7 @@ class GameObj():
         #move Pupil and eye
         self.eye.move(self.getNewX(self.eye.getCenter(), eyeCenX),self.getNewY(self.eye.getCenter(), eyeCenY))
         self.pupil.move(self.getNewX(self.pupil.getCenter(), pupilCenX),self.getNewY(self.pupil.getCenter(), pupilCenY))
-        
+
         #change score
         self.score.setText("Score: "+str(self.scoreNum))
         update(5)#this function forces everything to be drawn
@@ -366,26 +365,29 @@ class GameObj():
         againText.draw(self.canvas)
         endText.draw(self.canvas)
 
+        selection = False
         madeSelection = False
         while(madeSelection == False):
             anchor = self.canvas.getMouse()
             if(anchor.getX() > againPointX1 and anchor.getY() > againPointY1 and anchor.getX() < againPointX2 and anchor.getY() < againPointY2):
                 #are we inside the box of the again box
                 madeSelection = True
-                print("They want to play again")
+                #print("They want to play again")
+                selection = False
             if(anchor.getX() > endPointX1 and anchor.getY() > endPointY1 and anchor.getX() < endPointX2 and anchor.getY() < endPointY2):
                 madeSelection = True
-                print("The Player wanted to end the game")
-        
+                selection = True
+                #print("The Player wanted to end the game")
+
         again.undraw(self.canvas)
         end.undraw(self.canvas)
         againText.undraw(self.canvas)
         endText.undraw(self.canvas)
-
+        return(selection)
 
 
     def __init__(self, canvas):
-        
+
         self.isGraphWin(canvas)
         self.canvas = canvas
         self.gameOver = False
